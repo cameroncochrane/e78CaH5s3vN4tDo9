@@ -4,7 +4,7 @@ from pathlib import Path
 from tqdm import tqdm
 import typer
 
-from binary_classification.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
+from binary_classification.config import PROCESSED_DATA_DIR, RAW_DATA_DIR, INTERIM_DATA_DIR
 
 app = typer.Typer()
 
@@ -14,10 +14,10 @@ import pandas as pd
 
 @app.command()
 def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
+    
     input_path: Path = RAW_DATA_DIR / "ACME-HappinessSurvey2020.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "ACME-HappinessSurvey2020_processed.csv",
-    # ----------------------------------------------
+    output_path: Path = INTERIM_DATA_DIR / "ACME-HappinessSurvey2020_processed.csv",
+    
 ):
     def generate_XY(data_path:str = input_path, feature_cols:list = None):
 
@@ -59,7 +59,7 @@ def main(
 
     data.to_csv(output_path, index=False)
     
-    # -----------------------------------------
+    
 
 if __name__ == "__main__":
     app()

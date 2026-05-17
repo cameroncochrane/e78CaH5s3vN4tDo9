@@ -4,7 +4,7 @@ from loguru import logger
 from tqdm import tqdm
 import typer
 
-from binary_classification.config import FIGURES_DIR, PROCESSED_DATA_DIR
+from binary_classification.config import FIGURES_DIR, PROCESSED_DATA_DIR, INTERIM_DATA_DIR
 
 app = typer.Typer()
 
@@ -16,10 +16,10 @@ import seaborn as sns
 
 @app.command()
 def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = PROCESSED_DATA_DIR / "ACME-HappinessSurvey2020_processed.csv", # Use the processed data pre-feature engineering (not the feature engineered set(s))
+    
+    input_path: Path = INTERIM_DATA_DIR / "ACME-HappinessSurvey2020_processed.csv", # Use the processed data pre-feature engineering (not the feature engineered set(s))
     output_path: Path = FIGURES_DIR # Need individual paths for each plot
-    # -----------------------------------------
+    
 ):
     data = pd.read_csv(input_path)
     feature_cols = ['X1', 'X2', 'X3', 'X4', 'X5', 'X6']
@@ -27,7 +27,7 @@ def main(
     X = data[feature_cols]
     Y = data[target_cols]
     
-    # Value Distribtion (Gridplot)
+    # Value Distribution (Gridplot)
     data.hist(figsize=(12, 8), bins=5, edgecolor='black')
     plt.suptitle("Value Distribution (Gridplot)")
     plt.savefig(output_path / "value_distribution_gridplot.png", dpi=300, bbox_inches='tight')
@@ -65,17 +65,10 @@ def main(
     # Data Correlation (Gridplot)
     g = sns.pairplot(data, hue='Y', diag_kind='kde')
     g.figure.set_size_inches(12, 8)
-    g.figure.suptitle("Data Correlation (Gridplot)", y=0.99
+    g.figure.suptitle("Data Correlation (Gridplot)", y=0.99)
     g.figure.subplots_adjust(top=0.95)
     plt.savefig(output_path / "data_correlation_gridplot.png", dpi=300, bbox_inches='tight')
 
-    # Box Plots (Outlier Detection)
-    g = sns.boxplot(data)
-    g.figure.set_size_inches(12, 8)
-    g.figure.suptitle("Box Plots (Outlier Detection)", y=0.99)
-    g.figure.subplots_adjust(top=0.95)
-    g.set_ylabel('Score')
-    plt.savefig(output_path / "boxplots_outlier_detection.png", dpi=300, bbox_inches='tight')
 
     # Outlier Detection by Y value
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(12, 8))
@@ -100,8 +93,7 @@ def main(
     plt.title("Correlation Matrix")
     plt.savefig(output_path / "correlation_matrix.png", dpi=300, bbox_inches='tight')
 
-    # -----------------------------------------
-
+    
 
 if __name__ == "__main__":
     app()
