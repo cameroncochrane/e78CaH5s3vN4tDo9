@@ -26,7 +26,7 @@ def main(
     
     data = pd.read_csv(input_path) # Data has already gone through processing e.g. imputation etc.
     
-    def split_scale_data(data, feature_cols, target_col, stratify, test_size = 0.15, random_state = 13):
+    def split_scale_data(data, feature_cols, target_col, stratify, test_size = 0.3, random_state = 13):
 
         # Separate data into X and Y sets:
 
@@ -117,7 +117,7 @@ def main(
 
 
     # Update feature column list to consider the features to be used for modelling:
-    feature_cols = ['X1','X2','X4','X6'] # Post feature selection columns (removed 'X3' and 'X5')
+    feature_cols = ['X1','X3','X5','X6'] # Post feature selection columns (removed 'X2' and 'X4')
     target_col = ['Y'] # Also referred to as labels...
 
     # Processing the data (features selected) ready for modelling:
@@ -125,7 +125,7 @@ def main(
                                                                       feature_cols=feature_cols,
                                                                       target_col=target_col,
                                                                       stratify=data[target_col],
-                                                                      test_size=0.15,
+                                                                      test_size=0.2,
                                                                       random_state=13)
     
     # Save the split and scaled data as pkl files to maintain data strcuture (rather than csv).

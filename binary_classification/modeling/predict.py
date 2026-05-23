@@ -12,8 +12,8 @@ app = typer.Typer()
 # Custom imports:
 import pickle
 import pandas as pd
-from xgboost import XGBClassifier
-from sklearn.model_selection import GridSearchCV
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
 from sklearn.metrics import (
     accuracy_score,
@@ -40,7 +40,7 @@ def main(
 ):
     # Load model from the pkl file:
     with open(model_path, "rb") as f:
-        xgb_model = pickle.load(f)
+        knn_model = pickle.load(f)
     
     # Load the specific pkl files (test datasets):
     def load_specific_pickle(directory, filename):
@@ -53,8 +53,8 @@ def main(
     X_test_scaled = load_specific_pickle(features_path, "X_test_scaled.pkl")
     Y_test = load_specific_pickle(labels_path, "Y_test.pkl")
 
-    Y_xgb_grid_pred = xgb_model.predict(X_test_scaled)
-    Y_xgb_grid_proba = xgb_model.predict_proba(X_test_scaled)[:, 1]
+    Y_knn_grid_pred = knn_model.predict(X_test_scaled)
+    Y_knn_grid_proba = knn_model.predict_proba(X_test_scaled)[:, 1]
 
     def evaluate_binary_classifier(
             y_test,
@@ -149,19 +149,19 @@ def main(
             "classification_report": clf_report
     }
 
-    xgb_eval = evaluate_binary_classifier(Y_test, Y_xgb_grid_pred, Y_xgb_grid_proba)
+    knn_eval = evaluate_binary_classifier(Y_test, Y_knn_grid_pred, Y_knn_grid_proba)
 
     predictions_path.mkdir(parents=True, exist_ok=True)
     
     # Save predictions, probabilities, and evaluation results
-    with open(predictions_path / "Y_xgb_grid_pred.pkl", "wb") as f:
-        pickle.dump(Y_xgb_grid_pred, f)
+    with open(predictions_path / "Y_knn_grid_pred.pkl", "wb") as f:
+        pickle.dump(Y_knn_grid_pred, f)
     
-    with open(predictions_path / "Y_xgb_grid_proba.pkl", "wb") as f:
-        pickle.dump(Y_xgb_grid_proba, f)
+    with open(predictions_path / "Y_knn_grid_proba.pkl", "wb") as f:
+        pickle.dump(Y_knn_grid_proba, f)
     
-    with open(predictions_path / "xgb_eval.pkl", "wb") as f:
-        pickle.dump(xgb_eval, f)
+    with open(predictions_path / "knn_eval.pkl", "wb") as f:
+        pickle.dump(knn_eval, f)
     
 
 if __name__ == "__main__":

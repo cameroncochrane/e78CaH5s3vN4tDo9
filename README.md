@@ -5,7 +5,7 @@ A binary classification project on the ACME Happy Customers dataset.
 This repository contains an end-to-end workflow for:
 - preparing raw survey data,
 - performing feature selection and train/test preparation,
-- training an XGBoost classifier,
+- training a K-nearest neighbours (KNN) classifier,
 - evaluating and saving predictions,
 - generating exploratory and reporting plots.
 
@@ -60,9 +60,9 @@ python binary_classification/plots.py
     - `data/processed/feature_engineered_data/Y_test.pkl`
 - Trained model: `models/model.pkl`
 - Predictions and evaluation objects:
-    - `data/processed/predictions/Y_xgb_grid_pred.pkl`
-    - `data/processed/predictions/Y_xgb_grid_proba.pkl`
-    - `data/processed/predictions/xgb_eval.pkl`
+    - `data/processed/predictions/Y_knn_grid_pred.pkl`
+    - `data/processed/predictions/Y_knn_grid_proba.pkl`
+    - `data/processed/predictions/knn_eval.pkl`
 - Figures saved to `reports/figures/` (for example: correlation matrix, boxplots, and distribution plots)
 
 ## Project Structure
@@ -109,7 +109,7 @@ python binary_classification/plots.py
     - Runs feature diagnostics (correlation, variance threshold, mutual information, ANOVA),
         applies selected features, performs train/test split and robust scaling, and writes pickle artifacts.
 - `binary_classification/modeling/train.py`
-    - Trains an `XGBClassifier` with `GridSearchCV` and saves the best estimator.
+    - Trains an `XGBClassifier` with `GridSearchCV` and `KNeighborsClassifier` and saves the best estimator.
 - `binary_classification/modeling/predict.py`
     - Loads model and test data, computes predictions/probabilities, evaluates metrics,
         and saves prediction/evaluation pickle files.
@@ -136,6 +136,7 @@ Exploratory notebooks are available in `notebooks/`:
 - `Happy_Customers_2.ipynb`
 - `Happy_Customers_3.ipynb`
 - `Happy_Customers_4.ipynb`
+- `Happy_Customers_5.ipynb`
 
 ## Documentation
 

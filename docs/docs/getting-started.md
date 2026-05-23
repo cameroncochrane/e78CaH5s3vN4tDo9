@@ -55,9 +55,9 @@ After running the pipeline, verify these artifacts:
 	- `data/processed/feature_engineered_data/Y_test.pkl`
 - Trained model: `models/model.pkl`
 - Predictions and evaluation:
-	- `data/processed/predictions/Y_xgb_grid_pred.pkl`
-	- `data/processed/predictions/Y_xgb_grid_proba.pkl`
-	- `data/processed/predictions/xgb_eval.pkl`
+	- `data/processed/predictions/Y_knn_grid_pred.pkl`
+	- `data/processed/predictions/Y_knn_grid_proba.pkl`
+	- `data/processed/predictions/knn_eval.pkl`
 - Figures: `reports/figures/`
 
 ## Optional Development Commands
